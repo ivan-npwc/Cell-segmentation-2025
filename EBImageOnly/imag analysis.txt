@@ -1,0 +1,39 @@
+library(EBImage)
+   ImgDir="B:\\flatifish\\CELLS_DETECTOR_uia\\Image_original"
+   MskDir="B:\\flatifish\\CELLS_DETECTOR_uia\\Image_Mask"
+    ImgDirScale="B:\\flatifish\\CELLS_DETECTOR_uia\\ImageScale"
+
+
+pth="B:\\flatifish\\CELLS_DETECTOR_uia\\Image_original\\Imag\\VLF_16_a1.tif"
+name1=basename(pth)
+saveImagrePth=paste0(ImgDir,"\\",name1)
+saveImagrePth=gsub("tif","jpeg",saveImagrePth)
+saveMskPth=paste0(MskDir,"\\",name1)
+saveImagrePth=gsub("tif","pn", saveImagrePth)
+
+#  display(VLF_16_a1.tif)
+	
+	  img = getFrame(VLF_16_a1.tif, 1)
+       nmask = thresh(VLF_16_a1.tif, 25, 25, 0.01)  
+       nmask1 <- fillHull(nmask)
+       nmask2 = opening(nmask1, makeBrush(7,shape='disc') ) # shape='Gaussian', sigma=50 
+       nmask3 = fillHull(nmask2)
+       nmask4 = bwlabel(nmask3) 
+	   
+	
+	    shapeFeatures <- computeFeatures.shape(nmask4)
+		dtshapeFeatures=data.frame(shapeFeatures)
+	    numtoExl=row.names(dtshapeFeatures[dtshapeFeatures$s.area < 500,])
+	   
+	   
+	     nmask5= rmObjects(nmask4, numtoExl, reenumerate=FALSE)
+	
+         writeImage(nmask5)
+	   
+	   
+	   	#    x = channel(img0, 'rgb')
+        #   display(paintObjects(nmask5, x, thick=TRUE))
+			
+			
+			
+	    #  display(paintObjects(nmask4, x, thick=TRUE))
