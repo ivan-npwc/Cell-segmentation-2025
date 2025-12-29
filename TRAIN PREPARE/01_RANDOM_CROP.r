@@ -3,11 +3,11 @@
  
  library(EBImage)
  
- dirImgFrom ="C:\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA TRAIN\\ORIG\\Image"
- dirMskFrom ="C:\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA TRAIN\\ORIG\\Mask"
+ dirImgFrom  =  "/home/ivan/TRAIN/CELL/Naig20251226/Image"
+ dirMskFrom  =  "/home/ivan/TRAIN/CELL/Naig20251226/Mask"
  
- dirImgTo ="C:\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA TRAIN\\TRAIN_prepare\\Image_random_crop"
- dirMskTo ="C:\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA TRAIN\\TRAIN_prepare\\Mask_random_crop"
+ dirImgTo =  "/home/ivan/TRAIN/CELL/Naig20251226/Image_random_crop"
+ dirMskTo =   "/home/ivan/TRAIN/CELL/Naig20251226/Mask_random_crop"
  
  unlink(dirImgTo,recursive=T)
  unlink(dirMskTo,recursive=T)

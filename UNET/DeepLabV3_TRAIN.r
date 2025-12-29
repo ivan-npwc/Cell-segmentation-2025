@@ -1,24 +1,26 @@
+#source("/home/ivan/GIT_HUB/Cell-segmentation-2025/UNET/DeepLabV3_TRAIN.r")
+
+
 library(reticulate)
 library(tensorflow)
 # Настройка Python
-py_pth <- "C:\\Users\\usato\\AppData\\Local\\r-miniconda\\envs\\tf_2_10_env/python.exe"
-use_python(py_pth, required = TRUE)
-use_condaenv("tf_2_10_env", required = TRUE)
-tf$config$list_physical_devices('GPU')
+#py_pth <- "C:\\Users\\usato\\AppData\\Local\\r-miniconda\\envs\\tf_2_10_env/python.exe"
+#use_python(py_pth, required = TRUE)
+#use_condaenv("tf_2_10_env", required = TRUE)
+#tf$config$list_physical_devices('GPU')
 
 library(keras)
 library(tfdatasets)
 library(tidyverse)
 library(tensorflow)
-library(reticulate)
 
 # Параметры
-trainDir <- "C:\\Users\\usato\\Documents\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA_Train\\TRAIN_cell"
+trainDir <- "/home/ivan/TRAIN/CELL"
 images_dir <- file.path(trainDir, "Image")
 masks_dir <- file.path(trainDir, "Mask")
 
 epochs <- 100
-batch_size <- 4L
+batch_size <- 32L
 img_height <- 256L  # DeepLabV3+ лучше работает с размерами кратными 32/16
 img_width <- 256L
 validation_split <- 0.2
@@ -68,7 +70,7 @@ preprocess_image <- function(image_path) {
   image <- tf$image$convert_image_dtype(image, dtype = tf$float32)
   image <- tf$image$resize(image, size = c(img_height, img_width))
   # ResNet50 предобработка
-  image <- tf$keras$applications$resnet$preprocess_input(image)
+  #image <- tf$keras$applications$resnet$preprocess_input(image)
   return(image)
 }
 
@@ -358,8 +360,8 @@ cat("Compiling DeepLabV3+ model...\n")
 model %>% compile(
   optimizer = optimizer_adam(learning_rate = 1e-4),
   loss = dice_coef_loss,
-  metrics = list(dice_coef, iou_metric, "binary_accuracy")
-)
+  metrics = dice_coef)#list(dice_coef, iou_metric, "binary_accuracy")
+
 
 # Колбэки
 checkpoint_dir <- file.path(trainDir, "checkpoints_deeplabv3")
@@ -430,8 +432,8 @@ unfreeze_and_finetune <- function(model, learning_rate = 1e-6) {
   model %>% compile(
     optimizer = optimizer_adam(learning_rate = learning_rate),
     loss = dice_coef_loss,
-    metrics = list(dice_coef, iou_metric, "binary_accuracy")
-  )
+    metrics = dice_coef)#list(dice_coef, iou_metric, "binary_accuracy")
+
   
   return(model)
 }
