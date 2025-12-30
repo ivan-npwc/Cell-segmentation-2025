@@ -1,10 +1,11 @@
-library(reticulate)
+  library(reticulate)
   library("tensorflow")
+  
 # Настройка Python
-py_pth <- "C:\\Users\\usato\\AppData\\Local\\r-miniconda\\envs\\tf_2_10_env/python.exe"
-use_python(py_pth, required = TRUE)
-use_condaenv("tf_2_10_env", required = TRUE)
-tf$config$list_physical_devices('GPU')
+#py_pth <- "C:\\Users\\usato\\AppData\\Local\\r-miniconda\\envs\\tf_2_10_env/python.exe"
+#use_python(py_pth, required = TRUE)
+#use_condaenv("tf_2_10_env", required = TRUE)
+#tf$config$list_physical_devices('GPU')
 
 
 
@@ -43,6 +44,7 @@ iou_metric <- custom_metric("iou", function(y_true, y_pred, smooth = 1.0) {
   union <- k_sum(y_true_f) + k_sum(y_pred_f) - intersection
   (intersection + smooth) / (union + smooth)
 })
+
 pth = "C:\\Users\\usato\\Documents\\YandexDisk\\CURRENT WORK\\CELL SEGMENTATION 20241007\\DATA_Train\\TRAIN_cell\\checkpoints_resnet\\CellSegmentation20251016_Val_0.91_epoch_96_256.h5"
 
 model = load_model_hdf5(pth,
